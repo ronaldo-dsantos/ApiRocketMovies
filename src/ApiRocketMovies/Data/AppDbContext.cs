@@ -31,8 +31,8 @@ namespace ApiRocketMovies.Data
                 u.Property(u => u.UpdatedAt).HasDefaultValueSql("GETDATE()");
 
                 // Relacionamento 1:N User -> Movies
-                u.HasMany(u => u.Movies)
-                 .WithOne(m => m.User)
+                u.HasMany(m => m.Movies)
+                 .WithOne(u => u.User)
                  .HasForeignKey(m => m.UserId)
                  .OnDelete(DeleteBehavior.Restrict); // Evitar cascata
             });
@@ -50,8 +50,8 @@ namespace ApiRocketMovies.Data
                 m.Property(m => m.UpdatedAt).HasDefaultValueSql("GETDATE()");
 
                 // Relacionamento 1:N Movie -> Tags
-                m.HasMany(m => m.Tags)
-                 .WithOne(t => t.Movie)
+                m.HasMany(t => t.Tags)
+                 .WithOne(m => m.Movie)
                  .HasForeignKey(t => t.MovieId)
                  .OnDelete(DeleteBehavior.Cascade); // Cascata permitida aqui
             });
@@ -66,8 +66,8 @@ namespace ApiRocketMovies.Data
                 t.Property(t => t.Name).IsRequired().HasMaxLength(100);
 
                 // Relacionamento 1:N Tag -> User
-                t.HasOne(t => t.User)
-                 .WithMany(u => u.Tags)
+                t.HasOne(u => u.User)
+                 .WithMany(t => t.Tags)
                  .HasForeignKey(t => t.UserId)
                  .OnDelete(DeleteBehavior.Restrict); // Evitar cascata
             });

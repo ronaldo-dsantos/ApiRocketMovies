@@ -1,5 +1,7 @@
 ﻿using ApiRocketMovies.Data;
+using ApiRocketMovies.DTOs;
 using ApiRocketMovies.Models;
+using ApiRocketMovies.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +19,21 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Create(User user)
+        public async Task<ActionResult<User>> Create(UserDto userDto)
         {
-            var checkUserExists = await _context.Users.AnyAsync(u => u.Email == user.Email);
+            var checkEmailExists = await _context.Users.AnyAsync(u => u.Email == userDto.Email);
 
-            if (checkUserExists)
+            if (checkEmailExists)
             {
-                return Conflict("Este e-mail já está em uso.");
+                return BadRequest(new AppError("Este e-mail já está em uso."));
             }
+
+            var user = new User
+            {
+                Name = userDto.Name,
+                Email = userDto.Email,
+                Password = userDto.Password
+            };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
