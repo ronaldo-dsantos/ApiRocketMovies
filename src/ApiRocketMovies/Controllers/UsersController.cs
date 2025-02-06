@@ -1,7 +1,6 @@
 ﻿using ApiRocketMovies.Data;
 using ApiRocketMovies.DTOs;
 using ApiRocketMovies.Models;
-using ApiRocketMovies.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,43 +18,81 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Create(UserDto userDto)
+        public async Task<ActionResult<User>> Create(CreateUserDto createUserDto)
         {
-            var checkEmailExists = await _context.Users.AnyAsync(u => u.Email == userDto.Email);
-
-            if (checkEmailExists)
+            if (createUserDto == null)
             {
-                return BadRequest(new AppError("Este e-mail já está em uso."));
+                return BadRequest(new { Message = "Dados inválidos." });
             }
+
+            var checkEmailExists = await _context.Users.AnyAsync(u => u.Email == createUserDto.Email);
+            if (checkEmailExists)
+            {           
+                return BadRequest(new { Message = "Este e-mail já está em uso." });
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
 
             var user = new User
             {
-                Name = userDto.Name,
-                Email = userDto.Email,
-                Password = userDto.Password
+                Name = createUserDto.Name,
+                Email = createUserDto.Email,
+                Password = hashedPassword,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Created();
+            return Ok(new { user.Id, user.Name, user.Email });
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<User>> Update(int id, UpdateUserDto updateUserDto)
         {
-            return await _context.Users.ToListAsync();
-        }
+            if (updateUserDto == null)
+            {             
+                return BadRequest(new { Message = "Dados inválidos." });
+            }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
-            {
-                return NotFound();
+            {                
+                return BadRequest(new { Message = "Usuário não encontrado." });
             }
-            return user;
+
+            var emailExists = await _context.Users.FirstOrDefaultAsync(u => u.Email == updateUserDto.Email);
+            if (emailExists != null && emailExists.Id != user.Id)
+            {
+                return BadRequest(new { Message = "Este e-mail já está em uso." });
+            }
+
+            user.Name = updateUserDto.Name ?? user.Name;
+            user.Email = updateUserDto.Email ?? user.Email;
+
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                if (string.IsNullOrEmpty(updateUserDto.OldPassword))
+                {
+                    return BadRequest(new { Message = "Para alterar a senha, informe a senha antiga." });
+                }
+
+                var isOldPasswordValid = BCrypt.Net.BCrypt.Verify(updateUserDto.OldPassword, user.Password);
+                if (!isOldPasswordValid)
+                {
+                    return BadRequest(new { Message = "Senha antiga incorreta." });
+                }
+
+                user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
+            }
+
+            user.UpdatedAt = DateTime.Now;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { user.Id, user.Name, user.Email });
         }
     }
 }

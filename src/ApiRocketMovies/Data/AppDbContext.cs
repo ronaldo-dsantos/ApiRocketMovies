@@ -25,7 +25,7 @@ namespace ApiRocketMovies.Data
                 u.Property(u => u.Id).ValueGeneratedOnAdd();
                 u.Property(u => u.Name).IsRequired().HasMaxLength(100);
                 u.Property(u => u.Email).IsRequired().HasMaxLength(100);
-                u.Property(u => u.Password).IsRequired().HasMaxLength(8);
+                u.Property(u => u.Password).IsRequired().HasMaxLength(255);
                 u.Property(u => u.Avatar).HasMaxLength(255);
                 u.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
                 u.Property(u => u.UpdatedAt).HasDefaultValueSql("GETDATE()");
@@ -72,7 +72,6 @@ namespace ApiRocketMovies.Data
                  .OnDelete(DeleteBehavior.Restrict); // Evitar cascata
             });
         }
-
     }
 }
 
