@@ -45,7 +45,7 @@ namespace ApiRocketMovies.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { user.Id, user.Name, user.Email });
+            return Created();
         }
 
         [HttpPut("{id:int}")]
