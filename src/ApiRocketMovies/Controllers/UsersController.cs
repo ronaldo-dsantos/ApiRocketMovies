@@ -18,7 +18,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Create(CreateUserDto createUserDto)
+        public async Task<ActionResult> Create(CreateUserDto createUserDto)
         {
             if (createUserDto == null)
             {
@@ -49,7 +49,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<User>> Update(int id, UpdateUserDto updateUserDto)
+        public async Task<ActionResult> Update(int id, UpdateUserDto updateUserDto)
         {
             if (updateUserDto == null)
             {             
@@ -92,7 +92,7 @@ namespace ApiRocketMovies.Controllers
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { user.Id, user.Name, user.Email });
+            return Ok();
         }
     }
 }

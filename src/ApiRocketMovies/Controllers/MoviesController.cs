@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiRocketMovies.Models;
 using ApiRocketMovies.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiRocketMovies.Controllers
 {
@@ -65,6 +66,48 @@ namespace ApiRocketMovies.Controllers
             {
                 await transaction.RollbackAsync();
                 return StatusCode(500, new { Message = "Ocorreu um erro ao criar o filme." });
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ShowMovieDto>> Show(int id)
+        {
+            try
+            {
+                var movie = await _context.Movies
+                    .Include(m => m.Tags)
+                    .Include(m => m.User)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                if (movie == null)
+                {
+                    return NotFound(new { Message = "Filme não encontrado." });
+                }
+
+                var showMovieDto = new ShowMovieDto
+                {
+                    UserName = movie.User.Name,
+                    UserAvatar = movie.User.Avatar,
+                    Movie = new MovieDto
+                    {
+                        Id = movie.Id,
+                        Title = movie.Title,
+                        Description = movie.Description,
+                        Rating = movie.Rating,
+                        UserId = movie.UserId,
+                        CreatedAt = movie.CreatedAt,
+                        UpdatedAt = movie.UpdatedAt,
+                        Tags = movie.Tags
+                    }
+                };
+
+                return Ok(showMovieDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao buscar o filme: {ex.Message}");
+
+                return StatusCode(500, new { Message = "Ocorreu um erro ao buscar o filme." });
             }
         }
     }

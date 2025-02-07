@@ -1,4 +1,6 @@
-﻿namespace ApiRocketMovies.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ApiRocketMovies.Models
 {
     public class Tag
     {
@@ -7,7 +9,10 @@
         public int UserId { get; set; }
         public string Name { get; set; }
 
+        [JsonIgnore]
         public Movie Movie { get; set; }
+        
+        [JsonIgnore]
         public User User { get; set; }
     }
 }

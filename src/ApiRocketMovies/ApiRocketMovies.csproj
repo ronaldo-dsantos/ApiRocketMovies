@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\NovaPasta1\**" />
+    <Compile Remove="DTOs\NovaPasta\**" />
     <Compile Remove="Utils\**" />
+    <Content Remove="DTOs\NovaPasta1\**" />
+    <Content Remove="DTOs\NovaPasta\**" />
     <Content Remove="Utils\**" />
+    <EmbeddedResource Remove="DTOs\NovaPasta1\**" />
+    <EmbeddedResource Remove="DTOs\NovaPasta\**" />
     <EmbeddedResource Remove="Utils\**" />
+    <None Remove="DTOs\NovaPasta1\**" />
+    <None Remove="DTOs\NovaPasta\**" />
     <None Remove="Utils\**" />
   </ItemGroup>
 
