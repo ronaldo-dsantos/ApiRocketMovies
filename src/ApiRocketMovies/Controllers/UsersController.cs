@@ -20,6 +20,11 @@ namespace ApiRocketMovies.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(CreateUserDto createUserDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
             if (createUserDto == null)
             {
                 return BadRequest(new { Message = "Dados inválidos." });
@@ -51,6 +56,11 @@ namespace ApiRocketMovies.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, UpdateUserDto updateUserDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
             if (updateUserDto == null)
             {             
                 return BadRequest(new { Message = "Dados inválidos." });
