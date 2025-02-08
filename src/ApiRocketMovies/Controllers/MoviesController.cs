@@ -110,5 +110,29 @@ namespace ApiRocketMovies.Controllers
                 return StatusCode(500, new { Message = "Ocorreu um erro ao buscar o filme." });
             }
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {                
+                var movie = await _context.Movies.FindAsync(id);
+
+                if (movie == null)
+                {
+                    return NotFound(new { Message = "Filme não encontrado." });
+                }
+                
+                _context.Movies.Remove(movie);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Filme deletado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao deletar o filme: {ex.Message}");
+                return StatusCode(500, new { Message = "Ocorreu um erro ao deletar o filme." });
+            }
+        }
     }
 }
