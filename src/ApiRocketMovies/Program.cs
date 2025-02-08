@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .ConfigureApiBehaviorOptions(options =>
-    {
-        options.SuppressModelStateInvalidFilter = true;
-    });
+builder.Services.AddControllers();
 
 // Adicionar o serviço do Swagger
 builder.Services.AddEndpointsApiExplorer();

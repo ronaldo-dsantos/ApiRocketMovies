@@ -97,7 +97,7 @@ namespace ApiRocketMovies.Controllers
                         UserId = movie.UserId,
                         CreatedAt = movie.CreatedAt,
                         UpdatedAt = movie.UpdatedAt,
-                        Tags = movie.Tags
+                        Tags = movie.Tags 
                     }
                 };
 
@@ -152,14 +152,14 @@ namespace ApiRocketMovies.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             try
-            {                
+            {
                 var movie = await _context.Movies.FindAsync(id);
 
                 if (movie == null)
                 {
                     return NotFound(new { Message = "Filme não encontrado." });
                 }
-                
+
                 _context.Movies.Remove(movie);
                 await _context.SaveChangesAsync();
 
