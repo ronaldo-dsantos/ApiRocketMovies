@@ -111,6 +111,43 @@ namespace ApiRocketMovies.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MovieDto>>> Index(int userId, string title = null)
+        {
+            try
+            {
+                var query = _context.Movies
+                    .Include(m => m.Tags)
+                    .Where(m => m.UserId == userId);
+
+                if (!string.IsNullOrEmpty(title))
+                {
+                    query = query.Where(m => EF.Functions.Like(m.Title, $"%{title}%"));
+                }
+
+                var movies = await query
+                    .Select(m => new MovieDto
+                    {
+                        Id = m.Id,
+                        Title = m.Title,
+                        Description = m.Description,
+                        Rating = m.Rating,
+                        UserId = m.UserId,
+                        CreatedAt = m.CreatedAt,
+                        UpdatedAt = m.UpdatedAt,
+                        Tags = m.Tags
+                    })
+                    .ToListAsync();
+
+                return Ok(movies);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao buscar os filmes para o usuário {userId} com o título '{title}': {ex.Message}");
+                return StatusCode(500, new { Message = "Ocorreu um erro ao buscar os filmes." });
+            }
+        }
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

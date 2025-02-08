@@ -3,14 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/ApiRocketMovies/True/SqlTable/dbo.tags.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/ApiRocketMovies/True/SqlTable/dbo.movies.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\controllers\\moviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:controllers\\moviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\dtos\\moviedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:dtos\\moviedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,39 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "dbo.tags [Dados]",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/ApiRocketMovies/True/SqlTable/dbo.tags.sql",
-              "ToolTip": "dbo.tags [Dados]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-02-08T01:11:46.186Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "dbo.movies [Dados]",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/ApiRocketMovies/True/SqlTable/dbo.movies.sql",
-              "ToolTip": "dbo.movies [Dados]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-02-08T01:11:13.102Z",
+              "Title": "MovieDto.cs",
+              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\DTOs\\MovieDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\MovieDto.cs",
+              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\DTOs\\MovieDto.cs",
+              "RelativeToolTip": "DTOs\\MovieDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T02:16:15.568Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "MoviesController.cs",
               "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\MoviesController.cs",
               "RelativeDocumentMoniker": "Controllers\\MoviesController.cs",
               "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\MoviesController.cs*",
               "RelativeToolTip": "Controllers\\MoviesController.cs*",
-              "ViewState": "AgIAAGkAAAAAAAAAAAAcwIgAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAHIAAAAAAAAAAAA6wJQAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-08T00:55:52.064Z",
+              "WhenOpened": "2025-02-08T01:48:19.002Z",
               "EditorCaption": ""
             }
           ]
