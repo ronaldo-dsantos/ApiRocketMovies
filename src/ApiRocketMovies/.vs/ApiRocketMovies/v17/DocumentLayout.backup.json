@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\migrations\\20250211003358_identity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:migrations\\20250211003358_identity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -27,32 +23,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20250211003358_Identity.cs",
-              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Migrations\\20250211003358_Identity.cs",
-              "RelativeDocumentMoniker": "Migrations\\20250211003358_Identity.cs",
-              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Migrations\\20250211003358_Identity.cs",
-              "RelativeToolTip": "Migrations\\20250211003358_Identity.cs",
-              "ViewState": "AgIAAMEAAAAAAAAAAAAQwAsAAABFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:33:59.304Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
               "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Data\\AppDbContext.cs",
               "RelativeToolTip": "Data\\AppDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-11T00:17:05.379Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
