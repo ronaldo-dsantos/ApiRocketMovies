@@ -1,9 +1,11 @@
 ﻿using ApiRocketMovies.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiRocketMovies.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext()
         {
@@ -20,6 +22,8 @@ namespace ApiRocketMovies.Data
         {
             modelBuilder.Entity<User>(u =>
             {
+                base.OnModelCreating(modelBuilder);
+                
                 u.ToTable("users");
                 u.HasKey(u => u.Id);
                 u.Property(u => u.Id).ValueGeneratedOnAdd();
