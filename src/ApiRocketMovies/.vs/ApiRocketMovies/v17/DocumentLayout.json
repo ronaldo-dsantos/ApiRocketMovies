@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\dtos\\registeruserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:dtos\\registeruserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,32 +23,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "RegisterUserDto.cs",
-              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\DTOs\\RegisterUserDto.cs",
-              "RelativeDocumentMoniker": "DTOs\\RegisterUserDto.cs",
-              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\DTOs\\RegisterUserDto.cs",
-              "RelativeToolTip": "DTOs\\RegisterUserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACYAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T02:15:36.04Z",
+              "WhenOpened": "2025-02-11T02:28:55.366Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T02:09:32.348Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
