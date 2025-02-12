@@ -2,10 +2,10 @@
 using ApiRocketMovies.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace ApiFuncional.Controllers
@@ -14,12 +14,12 @@ namespace ApiFuncional.Controllers
     [Route("api/conta")]
     public class AuthController : ControllerBase
     {
-        private readonly SignInManager<IdentityUser> _signInManager; 
-        private readonly UserManager<IdentityUser> _userManager; 
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthController(SignInManager<IdentityUser> signInManager,
-                              UserManager<IdentityUser> userManager,
+        public AuthController(SignInManager<User> signInManager,
+                              UserManager<User> userManager,
                               IOptions<JwtSettings> jwtSettings)
         {
             _signInManager = signInManager;
@@ -28,26 +28,35 @@ namespace ApiFuncional.Controllers
         }
 
         [HttpPost("registrar")]
-        public async Task<ActionResult> Registrar(RegisterUserDto registerUser)
+        public async Task<ActionResult> Registrar(CreateUserDto createUserDto)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState); 
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var user = new IdentityUser
+            var checkEmailExists = await _userManager.Users.AnyAsync(u => u.Email == createUserDto.Email);
+            if (checkEmailExists)
             {
-                UserName = registerUser.Email,
-                Email = registerUser.Email,
-                EmailConfirmed = true
+                return BadRequest(new { Message = "Este e-mail já está em uso." });
+            }
+
+            var user = new User
+            {
+                Name = createUserDto.Name,
+                UserName = createUserDto.Email,
+                Email = createUserDto.Email,
+                EmailConfirmed = true,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
 
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
+            var result = await _userManager.CreateAsync(user, createUserDto.Password);
 
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return Ok(await GerarJwt(user.Email));
+                return Ok(GerarJwt());
             }
-
-            return Problem("Falha ao registrar o usuário");
+                        
+            return BadRequest(new { Message = "Falha ao registrar o usuário" });
         }
 
         [HttpPost("login")]
@@ -59,33 +68,19 @@ namespace ApiFuncional.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(await GerarJwt(loginUser.Email));
+                return Ok(GerarJwt());
             }
 
-            return Problem("Usuário ou senha incorretos");
+            return BadRequest(new { Message = "Email ou senha incorretos" });
         }
 
-        private async Task<string> GerarJwt(string email)
+        private string GerarJwt()
         {
-            var user = await _userManager.FindByEmailAsync(email); 
-            var roles = await _userManager.GetRolesAsync(user); 
-
-            var claims = new List<Claim> 
-            {
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
-
-            foreach (var role in roles) 
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Segredo);
 
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims), 
                 Issuer = _jwtSettings.Emissor,
                 Audience = _jwtSettings.Audiencia,
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpiracaoHoras),

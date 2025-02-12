@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using ApiRocketMovies.Models;
 using ApiRocketMovies.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiRocketMovies.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/movies")]
     public class MoviesController : ControllerBase
@@ -17,8 +19,8 @@ namespace ApiRocketMovies.Controllers
             _context = context;
         }
 
-        [HttpPost("{id:int}")]
-        public async Task<IActionResult> Create(int id, CreateMovieDto createMovieDto)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> Create(string id, CreateMovieDto createMovieDto)
         {
             if (!ModelState.IsValid)
             {
@@ -112,7 +114,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDto>>> Index(int userId, string title = null)
+        public async Task<ActionResult<IEnumerable<MovieDto>>> Index(string userId, string title = null)
         {
             try
             {

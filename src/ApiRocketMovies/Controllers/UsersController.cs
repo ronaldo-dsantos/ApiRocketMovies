@@ -36,13 +36,13 @@ namespace ApiRocketMovies.Controllers
                 return BadRequest(new { Message = "Este e-mail já está em uso." });
             }
 
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
+            //var passwordHash = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
 
             var user = new User
             {
                 Name = createUserDto.Name,
                 Email = createUserDto.Email,
-                Password = hashedPassword,
+                PasswordHash = createUserDto.Password,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
@@ -53,8 +53,8 @@ namespace ApiRocketMovies.Controllers
             return Created();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, UpdateUserDto updateUserDto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(string id, UpdateUserDto updateUserDto)
         {
             if (!ModelState.IsValid)
             {
@@ -88,13 +88,13 @@ namespace ApiRocketMovies.Controllers
                     return BadRequest(new { Message = "Para alterar a senha, informe a senha antiga." });
                 }
 
-                var isOldPasswordValid = BCrypt.Net.BCrypt.Verify(updateUserDto.OldPassword, user.Password);
+                var isOldPasswordValid = BCrypt.Net.BCrypt.Verify(updateUserDto.OldPassword, user.PasswordHash);
                 if (!isOldPasswordValid)
                 {
                     return BadRequest(new { Message = "Senha antiga incorreta." });
                 }
 
-                user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
             }
 
             user.UpdatedAt = DateTime.Now;
