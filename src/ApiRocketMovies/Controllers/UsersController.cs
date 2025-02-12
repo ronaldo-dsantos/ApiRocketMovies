@@ -79,34 +79,29 @@ namespace ApiRocketMovies.Controllers
                 return NotFound(new { Message = "Usuário não encontrado." });
             }
 
-            if (!string.IsNullOrEmpty(updateUserDto.Email))
+            // Verifica se o e-mail já está em uso por outro usuário
+            if (!string.IsNullOrEmpty(updateUserDto.Email) && updateUserDto.Email != user.Email)
             {
-                var emailExists = await _userManager.Users.AnyAsync(u => u.Email == updateUserDto.Email && u.Id != userId);
+                var emailExists = await _userManager.Users.AnyAsync(u => u.Email == updateUserDto.Email && u.Id != user.Id);
                 if (emailExists)
                 {
                     return BadRequest(new { Message = "Este e-mail já está em uso por outro usuário." });
                 }
-            }
 
-            user.Name = updateUserDto.Name ?? user.Name;
-
-            if (!string.IsNullOrEmpty(updateUserDto.Email))
-            {
                 user.Email = updateUserDto.Email;
                 user.UserName = updateUserDto.Email; 
             }
 
+            // Atualiza o nome, se fornecido
+            user.Name = updateUserDto.Name ?? user.Name;
+            user.UpdatedAt = DateTime.Now;
+
+            // Atualiza a senha, se fornecida
             if (!string.IsNullOrEmpty(updateUserDto.Password))
             {
                 if (string.IsNullOrEmpty(updateUserDto.OldPassword))
                 {
                     return BadRequest(new { Message = "Para alterar a senha, informe a senha antiga." });
-                }
-
-                var passwordValid = await _userManager.CheckPasswordAsync(user, updateUserDto.OldPassword);
-                if (!passwordValid)
-                {
-                    return BadRequest(new { Message = "Senha antiga incorreta." });
                 }
 
                 var passwordChangeResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, updateUserDto.Password);
@@ -116,8 +111,6 @@ namespace ApiRocketMovies.Controllers
                 }
             }
 
-            user.UpdatedAt = DateTime.Now;            
-         
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
