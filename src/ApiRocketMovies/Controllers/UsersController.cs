@@ -1,9 +1,11 @@
 ﻿using ApiRocketMovies.DTOs;
 using ApiRocketMovies.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace ApiRocketMovies.Controllers
 {
@@ -56,32 +58,43 @@ namespace ApiRocketMovies.Controllers
             return BadRequest(new { Message = "Falha ao registrar o usuário" });
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(string id, UpdateUserDto updateUserDto)
+        [Authorize]
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateUserDto updateUserDto)
         {
             if (!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
-            }            
+            }
 
-            var user = await _userManager.FindByIdAsync(id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { Message = "Usuário não autenticado." });
+            }
 
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { Message = "Usuário não encontrado." });
             }
 
-            var emailExists = await _userManager.Users.AnyAsync(u => u.Email == updateUserDto.Email && u.Id != id);
-
-            if (emailExists)
+            if (!string.IsNullOrEmpty(updateUserDto.Email))
             {
-                return BadRequest(new { Message = "Este e-mail já está em uso por outro usuário." });
+                var emailExists = await _userManager.Users.AnyAsync(u => u.Email == updateUserDto.Email && u.Id != userId);
+                if (emailExists)
+                {
+                    return BadRequest(new { Message = "Este e-mail já está em uso por outro usuário." });
+                }
             }
 
             user.Name = updateUserDto.Name ?? user.Name;
-            user.Email = updateUserDto.Email ?? user.Email;
-            user.UserName = updateUserDto.Email ?? user.UserName; 
+
+            if (!string.IsNullOrEmpty(updateUserDto.Email))
+            {
+                user.Email = updateUserDto.Email;
+                user.UserName = updateUserDto.Email; 
+            }
 
             if (!string.IsNullOrEmpty(updateUserDto.Password))
             {
@@ -103,8 +116,7 @@ namespace ApiRocketMovies.Controllers
                 }
             }
 
-            user.UpdatedAt = DateTime.Now;
-            
+            user.UpdatedAt = DateTime.Now;            
          
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace ApiFuncional.Controllers
@@ -29,34 +30,48 @@ namespace ApiFuncional.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginUserDto loginUser)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            if (!ModelState.IsValid) 
+                return ValidationProblem(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
 
             if (result.Succeeded)
             {
-                return Ok(GerarJwt());
+                var user = await _userManager.FindByEmailAsync(loginUser.Email);
+                if (user == null)
+                {
+                    return BadRequest(new { Message = "Usuário não encontrado." });
+                }
+
+                return Ok(GerarJwt(user));
             }
 
             return BadRequest(new { Message = "Email ou senha incorretos" });
         }
 
-        private string GerarJwt()
+        private string GerarJwt(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Segredo);
 
-            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            var claims = new[]
+{
+                new Claim(ClaimTypes.NameIdentifier, user.Id),  
+                new Claim(ClaimTypes.Name, user.Name),            
+                new Claim(ClaimTypes.Email, user.Email)           
+            };
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Subject = new ClaimsIdentity(claims),
                 Issuer = _jwtSettings.Emissor,
                 Audience = _jwtSettings.Audiencia,
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpiracaoHoras),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            });
+            };
 
-            var encodedToken = tokenHandler.WriteToken(token);
-
-            return encodedToken;
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
