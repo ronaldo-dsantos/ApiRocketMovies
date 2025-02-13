@@ -28,25 +28,40 @@ namespace ApiFuncional.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginUserDto loginUser)
+        public async Task<ActionResult<AuthResponseDto>> Login(LoginUserDto loginUser)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return ValidationProblem(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
-
-            if (result.Succeeded)
+            // Buscar usuário pelo e-mail
+            var user = await _userManager.FindByEmailAsync(loginUser.Email);
+            if (user == null)
             {
-                var user = await _userManager.FindByEmailAsync(loginUser.Email);
-                if (user == null)
-                {
-                    return BadRequest(new { Message = "Usuário não encontrado." });
-                }
-
-                return Ok(GerarJwt(user));
+                return BadRequest(new { Message = "Email ou senha incorretos" });
             }
 
-            return BadRequest(new { Message = "Email ou senha incorretos" });
+            // Autenticar com o UserName do Identity
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, loginUser.Password, false, true);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new { Message = "Email ou senha incorretos" });
+            }
+
+            // Criar resposta estruturada
+            var response = new AuthResponseDto
+            {
+                User = new UserResponseDto
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email
+                },
+                Token = GerarJwt(user)
+            };
+
+            return Ok(response);
+
         }
 
         private string GerarJwt(User user)
@@ -56,9 +71,9 @@ namespace ApiFuncional.Controllers
 
             var claims = new[]
 {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),  
-                new Claim(ClaimTypes.Name, user.Name),            
-                new Claim(ClaimTypes.Email, user.Email)           
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor

@@ -9,6 +9,15 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        policy => policy.WithOrigins("http://localhost:5173") 
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 builder.Services.AddControllers();
 
 // Adicionar o serviço do Swagger
@@ -77,6 +86,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+
+// Use o CORS
+app.UseCors("AllowLocalhost");
 
 if (app.Environment.IsDevelopment())
 {
