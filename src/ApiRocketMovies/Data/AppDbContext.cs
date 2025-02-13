@@ -26,6 +26,7 @@ namespace ApiRocketMovies.Data
                 u.HasKey(u => u.Id);
                 u.Property(u => u.Id).ValueGeneratedOnAdd();
                 u.Property(u => u.Name).IsRequired().HasMaxLength(100);
+                u.Property(u => u.Email).IsRequired().HasMaxLength(100);
                 u.Property(u => u.Avatar).HasMaxLength(255);
                 u.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
                 u.Property(u => u.UpdatedAt).HasDefaultValueSql("GETDATE()");
@@ -34,7 +35,7 @@ namespace ApiRocketMovies.Data
                 u.HasMany(u => u.Movies)
                  .WithOne(m => m.User)
                  .HasForeignKey(m => m.UserId)
-                 .OnDelete(DeleteBehavior.Restrict);
+                 .OnDelete(DeleteBehavior.Cascade);
 
                 // Relacionamento 1:N User -> Tags
                 u.HasMany(u => u.Tags)
