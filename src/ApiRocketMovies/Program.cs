@@ -1,3 +1,4 @@
+using ApiRocketMovies.Configuration;
 using ApiRocketMovies.Data;
 using ApiRocketMovies.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,6 +49,8 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {}
         }
     });
+
+    c.SchemaFilter<ExampleSchemaFilter>();
 });
 
 builder.Services.AddOpenApi();

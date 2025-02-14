@@ -7,8 +7,8 @@ namespace ApiRocketMovies.Models
     {
         public string Name { get; set; }
         public string Avatar { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } 
+        public DateTime UpdatedAt { get; set; } 
 
         [JsonIgnore]
         public ICollection<Movie> Movies { get; set; }

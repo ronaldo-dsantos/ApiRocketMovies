@@ -29,14 +29,18 @@ namespace ApiRocketMovies.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(CreateUserDto createUserDto)
         {
-            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            // Validar o modelo
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
 
-            var checkEmailExists = await _userManager.Users.AnyAsync(u => u.Email == createUserDto.Email);
-            if (checkEmailExists)
+            // Verificar se o e-mail já está em uso            
+            if (await _userManager.FindByEmailAsync(createUserDto.Email) != null)
             {
                 return BadRequest(new { Message = "Este e-mail já está em uso." });
             }
-
+                        
             var user = new User
             {
                 Name = createUserDto.Name,
@@ -47,15 +51,14 @@ namespace ApiRocketMovies.Controllers
                 UpdatedAt = DateTime.Now
             };
 
+            // Criar usuário no Identity
             var result = await _userManager.CreateAsync(user, createUserDto.Password);
-
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
-                return Created();
+                return BadRequest(new { Message = "Falha ao registrar o usuário" });
             }
 
-            return BadRequest(new { Message = "Falha ao registrar o usuário" });
+            return Created();
         }
 
         [Authorize]

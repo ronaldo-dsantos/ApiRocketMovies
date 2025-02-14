@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ApiFuncional.Controllers
 {
@@ -32,25 +30,14 @@ namespace ApiFuncional.Controllers
         [HttpPost]
         public async Task<ActionResult<AuthResponseDto>> Login(LoginUserDto loginUser)
         {
-            // Validar e-mail
-            try
+            // Validar modelo
+            if (!ModelState.IsValid)
             {
-                var emailCheck = new MailAddress(loginUser.Email);
-            }
-            catch
-            {
-                return BadRequest(new { Message = "Email inválido" });
-            }
-
-            // Validar senha
-            if (!SenhaValida(loginUser.Password))
-            {
-                return BadRequest(new { Message = $"Senha inválida.{Environment.NewLine}A senha deve ter no mínimo 6 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial." });
+                return ValidationProblem(ModelState);
             }
 
             // Autenticar usuário
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
-
             if (!result.Succeeded)
             {
                 return BadRequest(new { Message = "Email ou senha incorretos" });
@@ -101,13 +88,6 @@ namespace ApiFuncional.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        // Função para validar a senha
-        private bool SenhaValida(string senha)
-        {
-            var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
-            return regex.IsMatch(senha);
         }
     }
 }
