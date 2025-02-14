@@ -19,10 +19,6 @@ namespace ApiRocketMovies.Controllers
         {
             _context = context;
         }
-        private string GetUserId()
-        {
-            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateMovieDto createMovieDto)
@@ -32,7 +28,7 @@ namespace ApiRocketMovies.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            var userId = GetUserId();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
@@ -85,7 +81,7 @@ namespace ApiRocketMovies.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ShowMovieDto>> Show(int id)
         {
-            var userId = GetUserId();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
@@ -124,7 +120,7 @@ namespace ApiRocketMovies.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieDto>>> Index(string title = null)
         {
-            var userId = GetUserId();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
@@ -159,7 +155,7 @@ namespace ApiRocketMovies.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = GetUserId();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });

@@ -103,14 +103,14 @@ namespace ApiRocketMovies.Controllers
             user.UpdatedAt = DateTime.Now;
 
             // Atualiza a senha, se fornecida
-            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            if (!string.IsNullOrEmpty(updateUserDto.NewPassword))
             {
                 if (string.IsNullOrEmpty(updateUserDto.OldPassword))
                 {
                     return BadRequest(new { Message = "Para alterar a senha, informe a senha antiga." });
                 }
 
-                var passwordChangeResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, updateUserDto.Password);
+                var passwordChangeResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, updateUserDto.NewPassword);
                 if (!passwordChangeResult.Succeeded)
                 {
                     return BadRequest(new { Message = "A senha antiga não confere." });

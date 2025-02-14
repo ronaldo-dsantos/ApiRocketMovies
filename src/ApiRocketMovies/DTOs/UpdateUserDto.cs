@@ -12,9 +12,9 @@ namespace ApiRocketMovies.DTOs
         public string Email { get; set; }
 
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$", ErrorMessage = "Senha inválida. A senha deve ter no mínimo 6 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.")]
-        public string Password { get; set; }
-        
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$", ErrorMessage = "Senha inválida. A senha deve ter no mínimo 6 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.")]
         public string OldPassword { get; set; }
+
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$", ErrorMessage = "Senha inválida. A senha deve ter no mínimo 6 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.")]
+        public string NewPassword { get; set; }
     }
 }

@@ -7,8 +7,8 @@
       "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|c:\\users\\ronal\\onedrive\\documentos\\desenvolvedor.io\\projetos\\apirocketmovies\\src\\apirocketmovies\\controllers\\moviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CE25ED7-EC96-40F7-BBBC-7A27F490ABFE}|ApiRocketMovies.csproj|solutionrelative:controllers\\moviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,21 +18,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\AuthController.cs*",
-              "RelativeToolTip": "Controllers\\AuthController.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAABNAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-14T03:09:41.333Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -41,9 +28,22 @@
               "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
               "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\UsersController.cs*",
               "RelativeToolTip": "Controllers\\UsersController.cs*",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAgwDkAAABQAAAAAAAAAA==",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAgwHcAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-13T22:52:22.772Z",
+              "WhenOpened": "2025-02-14T18:05:17.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MoviesController.cs",
+              "DocumentMoniker": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\MoviesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MoviesController.cs",
+              "ToolTip": "C:\\Users\\ronal\\OneDrive\\Documentos\\desenvolvedor.io\\projetos\\ApiRocketMovies\\src\\ApiRocketMovies\\Controllers\\MoviesController.cs",
+              "RelativeToolTip": "Controllers\\MoviesController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwIgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-14T18:02:51.047Z",
               "EditorCaption": ""
             }
           ]

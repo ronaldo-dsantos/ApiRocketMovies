@@ -22,6 +22,14 @@ namespace ApiRocketMovies.Configuration
                     ["email"] = new OpenApiString("joao@email.com"),
                     ["password"] = new OpenApiString("Senha@123")
                 }
+                ,
+                [typeof(UpdateUserDto)] = new OpenApiObject
+                {
+                    ["name"] = new OpenApiString("João Silva"),
+                    ["email"] = new OpenApiString("joao@email.com"),
+                    ["oldPassword"] = new OpenApiString("Senha@123"),
+                    ["newPassword"] = new OpenApiString("NovaSenha@123")
+                }
             };
 
             if (examples.TryGetValue(context.Type, out var example))
