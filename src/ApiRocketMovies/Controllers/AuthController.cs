@@ -28,7 +28,7 @@ namespace ApiFuncional.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AuthResponseDto>> Login(LoginUserDto loginUser)
+        public async Task<ActionResult<UserResponseDto>> Login(LoginUserDto loginUser)
         {
             // Validar modelo
             if (!ModelState.IsValid)
@@ -40,7 +40,7 @@ namespace ApiFuncional.Controllers
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
             if (!result.Succeeded)
             {
-                return BadRequest(new { Message = "Email ou senha incorretos" });
+                return BadRequest(new { Message = "Email ou senha incorretos." });
             }
 
             // Buscar usuário
@@ -51,9 +51,9 @@ namespace ApiFuncional.Controllers
             }
 
             // Criar resposta estruturada
-            var response = new AuthResponseDto
+            var userResponse = new UserResponseDto
             {
-                User = new UserResponseDto
+                User = new UserDto
                 {
                     Id = user.Id,
                     Name = user.Name,
@@ -62,7 +62,7 @@ namespace ApiFuncional.Controllers
                 Token = GerarJwt(user)
             };
 
-            return Ok(response);
+            return Ok(userResponse);
         }
 
         private string GerarJwt(User user)

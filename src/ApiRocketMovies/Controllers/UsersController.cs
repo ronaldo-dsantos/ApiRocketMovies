@@ -40,7 +40,7 @@ namespace ApiRocketMovies.Controllers
             {
                 return BadRequest(new { Message = "Este e-mail já está em uso." });
             }
-                        
+
             var user = new User
             {
                 Name = createUserDto.Name,
@@ -55,7 +55,7 @@ namespace ApiRocketMovies.Controllers
             var result = await _userManager.CreateAsync(user, createUserDto.Password);
             if (!result.Succeeded)
             {
-                return BadRequest(new { Message = "Falha ao registrar o usuário" });
+                return BadRequest(new { Message = "Falha ao registrar o usuário." });
             }
 
             return Created();
@@ -63,19 +63,22 @@ namespace ApiRocketMovies.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult> Update(UpdateUserDto updateUserDto)
+        public async Task<ActionResult<UserDto>> Update(UpdateUserDto updateUserDto)
         {
+            // Validar o modelo
             if (!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
             }
 
+            // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
             }
 
+            // Obter o usuário a ser atualizado
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -92,7 +95,7 @@ namespace ApiRocketMovies.Controllers
                 }
 
                 user.Email = updateUserDto.Email;
-                user.UserName = updateUserDto.Email; 
+                user.UserName = updateUserDto.Email;
             }
 
             // Atualiza o nome, se fornecido
@@ -110,7 +113,7 @@ namespace ApiRocketMovies.Controllers
                 var passwordChangeResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, updateUserDto.Password);
                 if (!passwordChangeResult.Succeeded)
                 {
-                    return BadRequest(new { Message = "Falha ao atualizar a senha." });
+                    return BadRequest(new { Message = "A senha antiga não confere." });
                 }
             }
 
@@ -120,7 +123,15 @@ namespace ApiRocketMovies.Controllers
                 return BadRequest(new { Message = "Falha ao atualizar os dados do usuário." });
             }
 
-            return Ok(new { Message = "Usuário atualizado com sucesso." });
+            // Criar resposta estruturada
+            var userDto = new UserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email
+            };
+
+            return Ok(new { User = userDto, Message = "Usuário atualizado com sucesso." });
         }
     }
 }
