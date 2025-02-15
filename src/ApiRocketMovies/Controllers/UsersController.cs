@@ -113,9 +113,9 @@ namespace ApiRocketMovies.Controllers
                 var passwordChangeResult = await _userManager.ChangePasswordAsync(user, updateUserDto.OldPassword, updateUserDto.NewPassword);
                 if (!passwordChangeResult.Succeeded)
                 {
-                    return BadRequest(new { Message = "A senha antiga não confere." });
+                    return BadRequest(new { Message = "Erro ao alterar a senha." });
                 }
-            }
+            }         
 
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
@@ -128,7 +128,10 @@ namespace ApiRocketMovies.Controllers
             {
                 Id = user.Id,
                 Name = user.Name,
-                Email = user.Email
+                Email = user.Email,
+                Avatar = user.Avatar,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
             };
 
             return Ok(new { User = userDto, Message = "Usuário atualizado com sucesso." });

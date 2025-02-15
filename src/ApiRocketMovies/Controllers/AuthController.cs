@@ -57,7 +57,10 @@ namespace ApiFuncional.Controllers
                 {
                     Id = user.Id,
                     Name = user.Name,
-                    Email = user.Email
+                    Email = user.Email,
+                    Avatar = user.Avatar,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt
                 },
                 Token = GerarJwt(user)
             };
