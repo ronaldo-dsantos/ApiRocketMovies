@@ -20,78 +20,60 @@ namespace ApiRocketMovies.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateMovieDto createMovieDto)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MovieDto>>> GetAll(string title = null)
         {
-            if (!ModelState.IsValid)
-            {
-                return ValidationProblem(ModelState);
-            }
-
+            // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
             }
 
-            if (createMovieDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag)))
+            // Montar a query e adicionar o filtro de título se for informado
+            var query = _context.Movies
+                .Include(m => m.Tags)
+                .Where(m => m.UserId == userId);
+            if (!string.IsNullOrEmpty(title))
             {
-                return BadRequest(new { Message = "As tags não podem ser vazias." });
+                query = query.Where(m => EF.Functions.Like(m.Title, $"%{title}%"));
             }
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                var movie = new Movie
+            // Executar a query e retornar os filmes
+            var movies = await query
+                .Select(m => new MovieDto
                 {
-                    Title = createMovieDto.Title,
-                    Description = createMovieDto.Description,
-                    Rating = createMovieDto.Rating,
-                    UserId = userId,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                };
+                    Id = m.Id,
+                    Title = m.Title,
+                    Description = m.Description,
+                    Rating = m.Rating,
+                    UserId = m.UserId,
+                    CreatedAt = m.CreatedAt,
+                    UpdatedAt = m.UpdatedAt,
+                    Tags = m.Tags
+                })
+                .ToListAsync();
 
-                _context.Movies.Add(movie);
-                await _context.SaveChangesAsync();
-
-                foreach (var tagName in createMovieDto.Tags)
-                {
-                    var newTag = new Tag
-                    {
-                        MovieId = movie.Id,
-                        UserId = userId,
-                        Name = tagName,
-                    };
-                    _context.Tags.Add(newTag);
-                }
-                await _context.SaveChangesAsync();
-
-                await transaction.CommitAsync();
-
-                return Ok(new { Message = "Filme criado com sucesso." });
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync();
-                return StatusCode(500, new { Message = "Ocorreu um erro ao criar o filme." });
-            }
+            return Ok(movies);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ShowMovieDto>> Show(int id)
+        public async Task<ActionResult<ShowMovieDto>> GetById(int id)
         {
+            // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Verificar se o usuário está autenticado
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
             }
 
+            // Obter o filme
             var movie = await _context.Movies
                 .Include(m => m.Tags)
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id && m.UserId == userId);
-
             if (movie == null)
             {
                 return NotFound(new { Message = "Filme não encontrado ou você não tem permissão para visualizá-lo." });
@@ -117,50 +99,150 @@ namespace ApiRocketMovies.Controllers
             return Ok(showMovieDto);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDto>>> Index(string title = null)
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateMovieDto createMovieDto)
         {
+            // Validação do modelo
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Verificar se o usuário está autenticado
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
             }
 
-            var query = _context.Movies
-                .Include(m => m.Tags)
-                .Where(m => m.UserId == userId);
-
-            if (!string.IsNullOrEmpty(title))
+            // Verificar se as tags estão preenchidas
+            if (createMovieDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag)))
             {
-                query = query.Where(m => EF.Functions.Like(m.Title, $"%{title}%"));
+                return BadRequest(new { Message = "As tags não podem ser vazias." });
             }
 
-            var movies = await query
-                .Select(m => new MovieDto
+            // Iniciar uma transação
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Criar um novo filme
+                var movie = new Movie
                 {
-                    Id = m.Id,
-                    Title = m.Title,
-                    Description = m.Description,
-                    Rating = m.Rating,
-                    UserId = m.UserId,
-                    CreatedAt = m.CreatedAt,
-                    UpdatedAt = m.UpdatedAt,
-                    Tags = m.Tags
-                })
-                .ToListAsync();
+                    Title = createMovieDto.Title,
+                    Description = createMovieDto.Description,
+                    Rating = createMovieDto.Rating,
+                    UserId = userId,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                };
 
-            return Ok(movies);
+                // Adicionar o filme ao contexto
+                _context.Movies.Add(movie);
+                await _context.SaveChangesAsync();
+
+                // Adicionar as tags ao filme
+                foreach (var tagName in createMovieDto.Tags)
+                {
+                    var newTag = new Tag
+                    {
+                        MovieId = movie.Id,
+                        UserId = userId,
+                        Name = tagName,
+                    };
+                    _context.Tags.Add(newTag);
+                }
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return Ok(new { Message = "Filme criado com sucesso." });
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { Message = "Ocorreu um erro ao criar o filme." });
+            }
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, CreateMovieDto createMovieDto)
+        {
+            // Validação do modelo
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            // Obter o ID do usuário autenticado
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Verificar se o filme existe e pertence ao usuário
+            var movie = await _context.Movies
+                .Include(m => m.Tags)
+                .FirstOrDefaultAsync(m => m.Id == id && m.UserId == userId);
+
+            if (movie == null)
+            {
+                return NotFound(new { Message = "Filme não encontrado ou não pertence ao usuário." });
+            }
+
+            // Verificar se as tags estão preenchidas
+            if (createMovieDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag)))
+            {
+                return BadRequest(new { Message = "As tags não podem ser vazias." });
+            }
+
+            // Iniciar uma transação
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Atualizar os dados do filme
+                movie.Title = createMovieDto.Title;
+                movie.Description = createMovieDto.Description;
+                movie.Rating = createMovieDto.Rating;
+                movie.UpdatedAt = DateTime.Now;
+
+                _context.Movies.Update(movie);
+                await _context.SaveChangesAsync();
+
+                // Atualizar as tags: Remover as antigas e adicionar as novas
+                _context.Tags.RemoveRange(movie.Tags); // Remove todas as tags associadas ao filme
+                await _context.SaveChangesAsync();
+
+                var newTags = createMovieDto.Tags.Select(tagName => new Tag
+                {
+                    MovieId = movie.Id,
+                    UserId = userId,
+                    Name = tagName
+                }).ToList();
+
+                await _context.Tags.AddRangeAsync(newTags);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return Ok(new { Message = "Filme atualizado com sucesso." });
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { Message = "Ocorreu um erro ao atualizar o filme." });
+            }
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
+            // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { Message = "Usuário não autenticado." });
             }
 
+            // Obter o filme e verificar se ele pertence ao usuário autenticado
             var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id && m.UserId == userId);
             if (movie == null)
             {
