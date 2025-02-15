@@ -20,7 +20,7 @@ namespace ApiRocketMovies.Controllers
 
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult<UserDto>> Update([FromForm] AvatarDto avatarDto)
+        public async Task<ActionResult<UserDto>> UpdateAvatar([FromForm] AvatarDto avatarDto)
         {
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,7 +43,7 @@ namespace ApiRocketMovies.Controllers
             }
 
             // Define o diretório de upload e verifica se ele existe, senão cria
-            var uploadPath = Path.Combine("wwwroot", "images");
+            var uploadPath = Path.Combine("wwwroot", "files");
                        
             if (!Directory.Exists(uploadPath))
             {
@@ -62,10 +62,9 @@ namespace ApiRocketMovies.Controllers
 
             // Sanitiza o nome do arquivo
             var safeFileName = Path.GetFileNameWithoutExtension(avatarDto.AvatarFile.FileName);
-            safeFileName = string.Join("_", safeFileName.Split(Path.GetInvalidFileNameChars())); // Remove caracteres inválidos
+            safeFileName = string.Concat(safeFileName.Split(Path.GetInvalidFileNameChars())).Replace(" ", "_");
             var fileName = $"{Guid.NewGuid()}_{safeFileName}{fileExtension}";
             var fullPath = Path.Combine(uploadPath, fileName);
-
             try
             {
                 using (var stream = new FileStream(fullPath, FileMode.Create))
@@ -83,7 +82,7 @@ namespace ApiRocketMovies.Controllers
                         {
                             System.IO.File.Delete(oldAvatarPath);
                         }
-                        catch (Exception ex)
+                        catch (IOException ex)
                         {
                             Console.WriteLine($"Erro ao excluir avatar antigo: {ex.Message}");
                         }
@@ -107,29 +106,35 @@ namespace ApiRocketMovies.Controllers
                     Email = user.Email,
                     Avatar = user.Avatar,
                     CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt
+                    UpdatedAt = DateTime.Now
                 };
 
                 return Ok(new { User = userDto, Message = "Avatar atualizado com sucesso." });                
             }
             catch (Exception)
             {
-                return StatusCode(500, new { Message = "Erro interno ao processar o upload do avatar." });
+                return StatusCode(500, new { Message = "Erro interno ao processar o upload do avatar." }); ;
             }
+        }
+
+        [HttpGet("{fileName}")]
+        public IActionResult GetAvatar(string fileName)
+        {
+            var filePath = Path.Combine("wwwroot", "files", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(new { Message = "Imagem não encontrada." });
+            }
+
+            var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream"; // Tipo genérico caso não seja possível determinar
+            }
+
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, contentType);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
