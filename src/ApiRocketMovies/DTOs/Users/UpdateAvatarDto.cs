@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 
-namespace ApiRocketMovies.DTOs
+namespace ApiRocketMovies.DTOs.Users
 {
-    public class AvatarDto
+    public class UpdateAvatarDto
     {
         [NotMapped]
         [DisplayName("Avatar do Usuário")]

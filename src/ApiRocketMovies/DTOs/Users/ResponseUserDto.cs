@@ -1,6 +1,6 @@
-﻿namespace ApiRocketMovies.DTOs
+﻿namespace ApiRocketMovies.DTOs.Users
 {
-    public class UserResponseDto
+    public class ResponseUserDto
     {
         public UserDto User { get; set; }
         public string Token { get; set; }

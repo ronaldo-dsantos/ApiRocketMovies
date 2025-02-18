@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ApiRocketMovies.DTOs
+namespace ApiRocketMovies.DTOs.Movies
 {
     public class MovieDto
     {

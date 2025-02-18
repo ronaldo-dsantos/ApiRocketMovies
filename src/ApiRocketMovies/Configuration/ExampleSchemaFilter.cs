@@ -1,7 +1,7 @@
-﻿using ApiRocketMovies.DTOs;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Any;
+using ApiRocketMovies.DTOs.Users;
 
 namespace ApiRocketMovies.Configuration
 {

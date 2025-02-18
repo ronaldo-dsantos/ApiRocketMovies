@@ -1,10 +1,10 @@
 ﻿using ApiRocketMovies.Data;
 using Microsoft.AspNetCore.Mvc;
 using ApiRocketMovies.Models;
-using ApiRocketMovies.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using ApiRocketMovies.DTOs.Movies;
 
 namespace ApiRocketMovies.Controllers
 {
@@ -58,7 +58,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ShowMovieDto>> GetById(int id)
+        public async Task<ActionResult<GetMovieDto>> GetById(int id)
         {
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -79,7 +79,7 @@ namespace ApiRocketMovies.Controllers
                 return NotFound(new { Message = "Filme não encontrado ou você não tem permissão para visualizá-lo." });
             }
 
-            var showMovieDto = new ShowMovieDto
+            var getMovieDto = new GetMovieDto
             {
                 UserName = movie.User.Name,
                 UserAvatar = movie.User.Avatar,
@@ -96,7 +96,7 @@ namespace ApiRocketMovies.Controllers
                 }
             };
 
-            return Ok(showMovieDto);
+            return Ok(getMovieDto);
         }
 
         [HttpPost]
@@ -167,7 +167,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, CreateMovieDto createMovieDto)
+        public async Task<IActionResult> Update(int id, UpdateMovieDto updateMovieDto)
         {
             // Validação do modelo
             if (!ModelState.IsValid)
@@ -189,7 +189,7 @@ namespace ApiRocketMovies.Controllers
             }
 
             // Verificar se as tags estão preenchidas
-            if (createMovieDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag)))
+            if (updateMovieDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag)))
             {
                 return BadRequest(new { Message = "As tags não podem ser vazias." });
             }
@@ -199,9 +199,9 @@ namespace ApiRocketMovies.Controllers
             try
             {
                 // Atualizar os dados do filme
-                movie.Title = createMovieDto.Title;
-                movie.Description = createMovieDto.Description;
-                movie.Rating = createMovieDto.Rating;
+                movie.Title = updateMovieDto.Title;
+                movie.Description = updateMovieDto.Description;
+                movie.Rating = updateMovieDto.Rating;
                 movie.UpdatedAt = DateTime.Now;
 
                 _context.Movies.Update(movie);
@@ -211,7 +211,7 @@ namespace ApiRocketMovies.Controllers
                 _context.Tags.RemoveRange(movie.Tags); // Remove todas as tags associadas ao filme
                 await _context.SaveChangesAsync();
 
-                var newTags = createMovieDto.Tags.Select(tagName => new Tag
+                var newTags = updateMovieDto.Tags.Select(tagName => new Tag
                 {
                     MovieId = movie.Id,
                     UserId = userId,

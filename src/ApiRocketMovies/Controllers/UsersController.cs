@@ -1,10 +1,9 @@
-﻿using ApiRocketMovies.DTOs;
+﻿using ApiRocketMovies.DTOs.Users;
 using ApiRocketMovies.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
 namespace ApiRocketMovies.Controllers
@@ -13,17 +12,11 @@ namespace ApiRocketMovies.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly JwtSettings _jwtSettings;
+        private readonly UserManager<User> _userManager;        
 
-        public UsersController(SignInManager<User> signInManager,
-                              UserManager<User> userManager,
-                              IOptions<JwtSettings> jwtSettings)
+        public UsersController(UserManager<User> userManager)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _jwtSettings = jwtSettings.Value;
+            _userManager = userManager;            
         }
 
         [HttpPost]

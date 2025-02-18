@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ApiRocketMovies.DTOs
+namespace ApiRocketMovies.DTOs.Movies
 {
     public class CreateMovieDto
     {

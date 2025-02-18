@@ -1,4 +1,4 @@
-﻿using ApiRocketMovies.DTOs;
+﻿using ApiRocketMovies.DTOs.Users;
 using ApiRocketMovies.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +8,7 @@ using System.Security.Claims;
 namespace ApiRocketMovies.Controllers
 {
     [ApiController]
-    [Route("api/files")]
+    [Route("api/avatar")]
     public class UserAvatarController : ControllerBase
     {        
         private readonly UserManager<User> _userManager;
@@ -20,7 +20,7 @@ namespace ApiRocketMovies.Controllers
 
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult<UserDto>> UpdateAvatar([FromForm] AvatarDto avatarDto)
+        public async Task<ActionResult<UserDto>> UpdateAvatar([FromForm] UpdateAvatarDto updateAvatarDto)
         {
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -37,7 +37,7 @@ namespace ApiRocketMovies.Controllers
             }
 
             // Verifica se o arquivo foi enviado
-            if (avatarDto.AvatarFile == null || avatarDto.AvatarFile.Length == 0)
+            if (updateAvatarDto.AvatarFile == null || updateAvatarDto.AvatarFile.Length == 0)
             {
                 return BadRequest(new { Message = "Nenhum arquivo foi enviado." });
             }
@@ -52,7 +52,7 @@ namespace ApiRocketMovies.Controllers
 
             // Verifica a extensão do arquivo
             var extensoesPermitidas = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            var fileExtension = Path.GetExtension(avatarDto.AvatarFile.FileName).ToLower();
+            var fileExtension = Path.GetExtension(updateAvatarDto.AvatarFile.FileName).ToLower();
 
             if (!extensoesPermitidas.Contains(fileExtension))
             {
@@ -61,7 +61,7 @@ namespace ApiRocketMovies.Controllers
 
 
             // Sanitiza o nome do arquivo
-            var safeFileName = Path.GetFileNameWithoutExtension(avatarDto.AvatarFile.FileName);
+            var safeFileName = Path.GetFileNameWithoutExtension(updateAvatarDto.AvatarFile.FileName);
             safeFileName = string.Concat(safeFileName.Split(Path.GetInvalidFileNameChars())).Replace(" ", "_");
             var fileName = $"{Guid.NewGuid()}_{safeFileName}{fileExtension}";
             var fullPath = Path.Combine(uploadPath, fileName);
@@ -69,7 +69,7 @@ namespace ApiRocketMovies.Controllers
             {
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    await avatarDto.AvatarFile.CopyToAsync(stream);
+                    await updateAvatarDto.AvatarFile.CopyToAsync(stream);
                 }
 
                 // Remove o avatar antigo se existir

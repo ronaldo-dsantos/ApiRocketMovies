@@ -1,4 +1,4 @@
-﻿using ApiRocketMovies.DTOs;
+﻿using ApiRocketMovies.DTOs.Users;
 using ApiRocketMovies.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ using System.Text;
 namespace ApiFuncional.Controllers
 {
     [ApiController]
-    [Route("api/sessions")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly SignInManager<User> _signInManager;
@@ -28,7 +28,7 @@ namespace ApiFuncional.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserResponseDto>> Login(LoginUserDto loginUser)
+        public async Task<ActionResult<ResponseUserDto>> Login(LoginUserDto loginUser)
         {
             // Validar modelo
             if (!ModelState.IsValid)
@@ -51,7 +51,7 @@ namespace ApiFuncional.Controllers
             }
 
             // Criar resposta estruturada
-            var userResponse = new UserResponseDto
+            var responseUser = new ResponseUserDto
             {
                 User = new UserDto
                 {
@@ -65,7 +65,7 @@ namespace ApiFuncional.Controllers
                 Token = GerarJwt(user)
             };
 
-            return Ok(userResponse);
+            return Ok(responseUser);
         }
 
         private string GerarJwt(User user)

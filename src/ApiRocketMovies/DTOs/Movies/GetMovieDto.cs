@@ -1,6 +1,6 @@
-﻿namespace ApiRocketMovies.DTOs
+﻿namespace ApiRocketMovies.DTOs.Movies
 {
-    public class ShowMovieDto
+    public class GetMovieDto
     {
         public string UserName { get; set; }
         public string UserAvatar { get; set; }
