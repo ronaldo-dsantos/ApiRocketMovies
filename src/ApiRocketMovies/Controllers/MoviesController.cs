@@ -19,9 +19,9 @@ namespace ApiRocketMovies.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDto>>> GetAll(string title = null)
+        public async Task<ActionResult<IEnumerable<MovieDto>>> GetMoviesAll(string title = null)
         {
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -58,7 +58,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<GetMovieDto>> GetById(int id)
+        public async Task<ActionResult<GetMovieDto>> GetMovieById(int id)
         {
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -100,7 +100,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateMovieDto createMovieDto)
+        public async Task<IActionResult> CreateMovie(CreateMovieDto createMovieDto)
         {
             // Validação do modelo
             if (!ModelState.IsValid)
@@ -167,7 +167,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, UpdateMovieDto updateMovieDto)
+        public async Task<IActionResult> UpdateMovie(int id, UpdateMovieDto updateMovieDto)
         {
             // Validação do modelo
             if (!ModelState.IsValid)
@@ -233,7 +233,7 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteMovie(int id)
         {
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

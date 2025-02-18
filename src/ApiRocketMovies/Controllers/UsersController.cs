@@ -20,14 +20,8 @@ namespace ApiRocketMovies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateUserDto createUserDto)
+        public async Task<ActionResult> CreateUser(CreateUserDto createUserDto)
         {
-            // Validar o modelo
-            if (!ModelState.IsValid)
-            {
-                return ValidationProblem(ModelState);
-            }
-
             // Verificar se o e-mail já está em uso            
             if (await _userManager.FindByEmailAsync(createUserDto.Email) != null)
             {
@@ -56,14 +50,8 @@ namespace ApiRocketMovies.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult<UserDto>> Update(UpdateUserDto updateUserDto)
+        public async Task<ActionResult<UserDto>> UpdateUser(UpdateUserDto updateUserDto)
         {
-            // Validar o modelo
-            if (!ModelState.IsValid)
-            {
-                return ValidationProblem(ModelState);
-            }
-
             // Obter o ID do usuário autenticado
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
