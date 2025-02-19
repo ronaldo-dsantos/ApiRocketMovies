@@ -25,7 +25,7 @@ namespace ApiRocketMovies.Controllers
             // Verificar se o e-mail já está em uso            
             if (await _userManager.FindByEmailAsync(createUserDto.Email) != null)
             {
-                return BadRequest(new { Message = "Este e-mail já está em uso." });
+                return Conflict(new { Message = "Este e-mail já está em uso." });
             }
 
             var user = new User

@@ -157,7 +157,7 @@ namespace ApiRocketMovies.Controllers
 
                 await transaction.CommitAsync();
 
-                return Ok(new { Message = "Filme criado com sucesso." });
+                return Created();
             }
             catch (Exception)
             {

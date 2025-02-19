@@ -19,7 +19,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // Usar Cors com política de desenvolvimento
     app.UseCors("Development");
 }
 else

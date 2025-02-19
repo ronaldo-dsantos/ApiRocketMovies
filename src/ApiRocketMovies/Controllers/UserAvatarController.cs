@@ -29,7 +29,7 @@ namespace ApiRocketMovies.Controllers
                 return Unauthorized(new { Message = "Usuário não autenticado." });
             }
 
-            // Buscar usuário no banco de dados
+            // Obter o usuário a ser atualizado
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -43,7 +43,7 @@ namespace ApiRocketMovies.Controllers
             }
 
             // Define o diretório de upload e verifica se ele existe, senão cria
-            var uploadPath = Path.Combine("wwwroot", "files");
+            var uploadPath = Path.Combine("wwwroot", "images");
                        
             if (!Directory.Exists(uploadPath))
             {
@@ -59,7 +59,6 @@ namespace ApiRocketMovies.Controllers
                 return BadRequest(new { Message = "Formato de imagem inválido. Apenas .jpg, .jpeg, .png e .gif são permitidos." });
             }
 
-
             // Sanitiza o nome do arquivo
             var safeFileName = Path.GetFileNameWithoutExtension(updateAvatarDto.AvatarFile.FileName);
             safeFileName = string.Concat(safeFileName.Split(Path.GetInvalidFileNameChars())).Replace(" ", "_");
@@ -67,6 +66,7 @@ namespace ApiRocketMovies.Controllers
             var fullPath = Path.Combine(uploadPath, fileName);
             try
             {
+                // Salva o avatar do usuário
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
                     await updateAvatarDto.AvatarFile.CopyToAsync(stream);
@@ -89,7 +89,7 @@ namespace ApiRocketMovies.Controllers
                     }
                 }
 
-                // Atualiza o avatar do usuário
+                // Atualiza o caminho do avatar do usuário no banco de dados
                 user.Avatar = fileName;
                 var updateResult = await _userManager.UpdateAsync(user);
 
@@ -120,7 +120,7 @@ namespace ApiRocketMovies.Controllers
         [HttpGet("{fileName}")]
         public IActionResult GetAvatar(string fileName)
         {
-            var filePath = Path.Combine("wwwroot", "files", fileName);
+            var filePath = Path.Combine("wwwroot", "images", fileName);
 
             if (!System.IO.File.Exists(filePath))
             {
