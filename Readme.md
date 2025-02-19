@@ -57,22 +57,22 @@ Authorization: Bearer SEU_TOKEN_AQUI
 ## 📌 Endpoints
 
 ### 🧑‍💼 Auth
-#### 🔹 Logar Usuário
+#### 🔹 Login
 
 ### 🧑‍💼 Users
-#### 🔹 Criar Usuário
-#### 🔹 Editar Usuário
+#### 🔹 CreateUser
+#### 🔹 UpdateUser
 
 ### 🧑‍💼 UsersAvatar
-#### 🔹 Atualizar Avatar
-#### 🔹 Pegar avatar
+#### 🔹 UpdateAvatar
+#### 🔹 GetAvatar
 
 ### 🎬 Movies
-#### 🔹 Adicionar Filme
-#### 🔹 Listar Filmes
-#### 🔹 Listar Filme
-#### 🔹 Editar Filme
-#### 🔹 Deletar Filme
+#### 🔹 GetMoviesAll
+#### 🔹 GetMovieById
+#### 🔹 CreateMovie
+#### 🔹 UpdateMovie
+#### 🔹 DeleteMovie
 
 ## 📜 Licença
 
