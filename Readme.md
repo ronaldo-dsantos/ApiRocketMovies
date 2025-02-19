@@ -13,11 +13,11 @@ Bem-vindo à API RocketMovies, uma API RESTful desenvolvida em ASP.NET Core para
 
 ## 📖 Sumário
 
-- 🚀 [Instalação e Configuração](#instalação-e-configuração)
-- 🔑 [Autenticação](#autenticação)
-- 📌 [Endpoints](#endpoints)
-- 🛠 [Contribuição](#contribuição)
-- 📜 [Licença](#licença)
+- 🚀 [Instalação e Configuração](#-instalação-e-configuração)
+- 🔑 [Autenticação](#-autenticação)
+- 📌 [Endpoints](#-endpoints)
+- 🛠 [Contribuição](#-contribuição)
+- 📜 [Licença](#-licença)
 
 ## 🚀 Instalação e Configuração
 
