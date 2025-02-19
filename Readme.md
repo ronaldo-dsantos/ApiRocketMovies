@@ -56,14 +56,14 @@ Authorization: Bearer SEU_TOKEN_AQUI
 
 ## 📌 Endpoints
 
-### 🧑‍💼 Auth
+### 🔐 Auth
 #### 🔹 Login
 
-### 🧑‍💼 Users
+### 🧑 Users
 #### 🔹 CreateUser
 #### 🔹 UpdateUser
 
-### 🧑‍💼 UsersAvatar
+### 🧑 UsersAvatar
 #### 🔹 UpdateAvatar
 #### 🔹 GetAvatar
 
