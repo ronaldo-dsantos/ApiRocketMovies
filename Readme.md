@@ -11,6 +11,14 @@ Bem-vindo à API RocketMovies, uma API RESTful desenvolvida em ASP.NET Core para
 - LINQ
 - JWT (JSON Web Token)
 
+## 📖 Sumário
+
+- 🚀 [Instalação e Configuração](#instalação-e-configuração)
+- 🔑 [Autenticação](#autenticação)
+- 📌 [Endpoints](#endpoints)
+- 🛠 [Contribuição](#contribuição)
+- 📜 [Licença](#licença)
+
 ## 🚀 Instalação e Configuração
 
 ### 1️⃣ Clonando o repositório
@@ -22,15 +30,13 @@ cd ApiRocketMovies
 
 ### 2️⃣ Configurando o banco de dados
 
-A API utiliza SQL Server. Configure a connection string no arquivo `appsettings.json`:
+A API utiliza SQL Server. Configure a connection string no arquivo `appsettings.json` ou utilize variáveis de ambiente para armazenar credenciais sensíveis:
 
 ```json
 "ConnectionStrings": {
     "DefaultConnection": "Server=SEU_SERVIDOR;Database=RocketMoviesDB;User Id=SEU_USUARIO;Password=SUA_SENHA;"
 }
 ```
-
-💡 **Dica:** Para maior segurança, utilize variáveis de ambiente para armazenar credenciais sensíveis.
 
 ### 3️⃣ Aplicando as Migrations
 
@@ -46,14 +52,11 @@ dotnet ef database update
 dotnet run
 ```
 
-A API estará disponível em:
-
-- `http://localhost:5292`
-- `https://localhost:7155`
+A API estará disponível em `http://localhost:5292` ou `https://localhost:7155`.
 
 ## 🔑 Autenticação
 
-A API utiliza JWT para autenticação. Após o login, um token será gerado e deverá ser enviado no header das requisições protegidas:
+A API usa JWT para autenticação. Após o login, um token será gerado e deve ser enviado no header das requisições protegidas:
 
 ```
 Authorization: Bearer SEU_TOKEN_AQUI
@@ -61,76 +64,63 @@ Authorization: Bearer SEU_TOKEN_AQUI
 
 ## 📌 Endpoints
 
-### 🧑🔐 Auth
+### 🔒 Autenticação
 
-#### 🔹 Logar Usuário
+| Método | Rota                   | Descrição                  |
+|--------|------------------------|----------------------------|
+| POST   | /api/auth              | Autentica o usuário        |
 
-**POST** `/api/auth/login`
+### 🧑 Usuários
 
-**Descrição:** Autentica um usuário e retorna um token JWT.
+| Método | Rota                   | Descrição                  |
+|--------|------------------------|----------------------------|
+| POST   | /api/users             | Cria um novo usuário       |
+| PUT    | /api/users             | Edita um usuário           |
 
-### 🧑‍💼 Users
+### 🖼️ Avatar
 
-#### 🔹 Criar Usuário
+| Método | Rota                   | Descrição                  |
+|--------|------------------------|----------------------------|
+| PATCH  | /api/avatar            | Edita o avatar do usuário  |
+| GET    | /api/avatar/{filename} | Obtém o avatar do usuário  |
 
-**POST** `/api/users`
+### 🎬 Filmes
 
-**Descrição:** Cria um novo usuário na plataforma.
+| Método | Rota                   | Descrição                  |
+|--------|------------------------|----------------------------|
+| POST   | /api/movies            | Adiciona um novo filme     |
+| GET    | /api/movies            | Lista todos os filmes      |
+| GET    | /api/movies/{id}       | Obtém detalhes de um filme |
+| PUT    | /api/movies/{id}       | Edita um filme             |
+| DELETE | /api/movies/{id}       | Remove um filme            |
 
-#### 🔹 Editar Usuário
+## 🛠 Contribuição
 
-**PUT** `/api/users`
+Contribuições são bem-vindas! Siga os passos abaixo para colaborar:
 
-**Descrição:** Atualiza informações do usuário autenticado.
+1. Fork o repositório.
+2. Crie um branch para sua feature:
 
-### 🖼️ Users Avatar
+    ```bash
+    git checkout -b minha-feature
+    ```
 
-#### 🔹 Atualizar Avatar
+3. Commit suas alterações:
 
-**PUT** `/api/users/avatar`
+    ```bash
+    git commit -m "Minha nova feature"
+    ```
 
-**Descrição:** Atualiza a foto de perfil do usuário.
+4. Envie suas alterações:
 
-#### 🔹 Obter Avatar
+    ```bash
+    git push origin minha-feature
+    ```
 
-**GET** `/api/users/avatar/{userId}`
-
-**Descrição:** Obtém a foto de perfil do usuário.
-
-### 🎬 Movies
-
-#### 🔹 Adicionar Filme
-
-**POST** `/api/movies`
-
-**Descrição:** Adiciona um novo filme à biblioteca do usuário.
-
-#### 🔹 Listar Filmes
-
-**GET** `/api/movies`
-
-**Descrição:** Retorna uma lista de filmes cadastrados pelo usuário.
-
-#### 🔹 Obter Detalhes de um Filme
-
-**GET** `/api/movies/{id}`
-
-**Descrição:** Retorna informações detalhadas de um filme.
-
-#### 🔹 Editar Filme
-
-**PUT** `/api/movies/{id}`
-
-**Descrição:** Atualiza informações de um filme.
-
-#### 🔹 Deletar Filme
-
-**DELETE** `/api/movies/{id}`
-
-**Descrição:** Remove um filme da biblioteca do usuário.
+5. Abra um Pull Request.
 
 ## 📜 Licença
 
 Este projeto está sob a licença MIT.
 
-## 🔗 Desenvolvido por Ronaldo Domingues 🚀
+🔗 Desenvolvido por Ronaldo Domingues 🚀
